@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yash Sharma | Inference & AI Systems Engineer</title>
+  <meta name="description" content="Portfolio of Yash Sharma - Aspiring Inference Engineer specializing in high-throughput model serving, quantization (AWQ/GPTQ), and low-latency systems.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23755CFE%22 stroke-width=%222%22><polygon points=%2213 2 3 14 12 14 11 22 21 10 12 10 13 2%22/></svg>">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation (Lemma Style) -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      
+      <div class="nav-brand">
+        <a href="#hero" class="brand-cube" title="Yash Sharma">
+          <!-- Lemma-inspired isometric precision emblem -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+            <path d="M2 17l10 5 10-5"></path>
+            <path d="M2 12l10 5 10-5"></path>
+          </svg>
+        </a>
+        <a href="#hero" class="brand-title">Yash Sharma</a>
+        <span class="brand-spec font-mono">INF.SYS</span>
+      </div>
+
+      <nav class="nav-links" id="nav-links">
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#experiments" class="nav-link">Experiments</a>
+        <a href="#skills" class="nav-link">Systems Stack</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme" title="Toggle Theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a href="https://github.com/yash6967/" target="_blank" rel="noopener noreferrer" class="btn-lemma" title="GitHub">
+          <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          <span>GitHub</span>
+        </a>
+
+        <a href="#contact" class="btn-lemma btn-lemma-primary">
+          <span>Get in Touch</span>
+        </a>
+
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Mobile Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+      <div class="hero-glow"></div>
+      <div class="container">
+        
+        <div class="hero-header-box">
+          <div class="status-indicator">
+            <span class="pulse-dot"></span>
+            <span>INFERENCE STATUS // AVAILABLE FOR ROLES</span>
+          </div>
+          <div class="hero-coords font-mono">[LEM.SYS // INF-ENG-2026]</div>
+        </div>
+
+        <h1 class="hero-title">
+          Hi, I'm <span class="hero-gradient">Yash Sharma</span>.
+        </h1>
+        
+        <p class="hero-subhead">
+          Aspiring <strong>Inference Engineer</strong> specializing in 
+          <strong>high-throughput model serving</strong>, 
+          <strong>low-latency optimization</strong>, and <strong>quantization</strong>.
+        </p>
+
+        <p class="hero-narrative">
+          Bridging the gap between frontier models and production hardware. I optimize LLM serving workloads using continuous batching (vLLM), TensorRT-LLM, weight/activation quantization (AWQ/GPTQ/FP8), and GPU memory profiling to maximize tokens-per-second while slashing p99 latency.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#projects" class="btn-lemma btn-lemma-primary">
+            <span>Explore Engineering Work</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <a href="https://github.com/yash6967/" target="_blank" rel="noopener noreferrer" class="btn-lemma">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            <span>github.com/yash6967</span>
+          </a>
+          <a href="https://www.linkedin.com/in/yash232/" target="_blank" rel="noopener noreferrer" class="btn-lemma">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            <span>LinkedIn</span>
+          </a>
+        </div>
+
+        <!-- Interactive Lemma-Style Terminal / Trace Inspector -->
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <div class="terminal-title">yash-sharma // inference-runtime-profiler</div>
+            <div class="font-mono text-purple" style="font-size: 0.7rem;">CUDA 12.4 // SM_89</div>
+          </div>
+
+          <div class="terminal-nav" id="terminal-nav">
+            <button class="term-tab active" data-tab="vllm">vllm-serving.trace</button>
+            <button class="term-tab" data-tab="awq">awq-quant.log</button>
+            <button class="term-tab" data-tab="triton">triton-grpc.perf</button>
+            <button class="term-tab" data-tab="flash">flashattn-roofline.nvtx</button>
+          </div>
+
+          <div class="terminal-body" id="terminal-content">
+            <!-- Dynamic Tab Content filled by JS -->
+          </div>
+        </div>
+
+        <!-- Lemma-Style Metrics Strip -->
+        <div class="stats-table-grid">
+          <div class="stats-cell">
+            <span class="stats-cell-tag">SPEC. 01 // SERVING</span>
+            <div class="stats-cell-val">vLLM & TRT-LLM</div>
+            <div class="stats-cell-label">Continuous batching & PagedAttention</div>
+          </div>
+          <div class="stats-cell">
+            <span class="stats-cell-tag">SPEC. 02 // COMPRESSION</span>
+            <div class="stats-cell-val">AWQ / GPTQ / FP8</div>
+            <div class="stats-cell-label">Weight-only & weight-activation precision</div>
+          </div>
+          <div class="stats-cell">
+            <span class="stats-cell-tag">SPEC. 03 // LATENCY</span>
+            <div class="stats-cell-val">&lt; 18ms TTFT</div>
+            <div class="stats-cell-label">Time-To-First-Token under concurrency</div>
+          </div>
+          <div class="stats-cell">
+            <span class="stats-cell-tag">SPEC. 04 // PROFILING</span>
+            <div class="stats-cell-val">Nsight & PyTorch</div>
+            <div class="stats-cell-label">Memory bandwidth & roofline saturation</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Projects Section (Front & Center) -->
+    <section class="section" id="projects">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">[ SECTION 01 // BENCHMARKS & WORK ]</span>
+          <h2 class="section-title">Inference Engineering Projects</h2>
+          <p class="section-desc">
+            Production systems, serving architectures, quantization pipelines, and hardware memory optimizations.
+          </p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">[ALL SYSTEMS]</button>
+          <button class="filter-btn" data-filter="serving">[MODEL SERVING]</button>
+          <button class="filter-btn" data-filter="quantization">[QUANTIZATION]</button>
+          <button class="filter-btn" data-filter="benchmarking">[PROFILING & METRICS]</button>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid" id="projects-grid">
+
+          <!-- Project 1 -->
+          <article class="project-card" data-category="serving">
+            <div class="project-topbar">
+              <span class="trace-id">TRACE-ID: vllm-llama3-serving-70b</span>
+              <span class="trace-metric">⚡ 3.2x Throughput</span>
+            </div>
+            <div class="project-content">
+              <span class="project-cat-tag">[INF. 01 // SERVING ENGINES]</span>
+              <h3 class="project-title">High-Throughput Distributed LLM Serving with vLLM</h3>
+              <p class="project-desc">
+                Engineered a scalable model serving pipeline for Llama-3 using continuous batching and PagedAttention. Tuned KV cache allocation, sequence scheduling, and tensor parallelism to reduce Time-To-First-Token (TTFT) by 42% under high concurrency loads.
+              </p>
+              
+              <div class="project-audit-box">
+                <div class="audit-row"><span class="audit-label">Audit:</span> <span class="audit-val">-42% TTFT under 64 concurrent requests</span></div>
+                <div class="audit-row"><span class="audit-label">Engine:</span> <span class="audit-val">vLLM + Ray Distributed Cluster</span></div>
+                <div class="audit-row"><span class="audit-label">Throughput:</span> <span class="audit-val">114 tokens/sec aggregate per GPU</span></div>
+              </div>
+
+              <div class="tech-tags">
+                <span class="tag">vLLM</span>
+                <span class="tag">PagedAttention</span>
+                <span class="tag">Docker</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">Ray</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <a href="https://github.com/yash6967/" target="_blank" rel="noopener noreferrer" class="card-link">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                <span>View Source</span>
+              </a>
+              <a href="#contact" class="card-link secondary">
+                <span>Architecture Spec ↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="project-card" data-category="quantization">
+            <div class="project-topbar">
+              <span class="trace-id">TRACE-ID: quant-awq-gptq-eval-08</span>
+              <span class="trace-metric">📉 -63% VRAM Footprint</span>
+            </div>
+            <div class="project-content">
+              <span class="project-cat-tag">[INF. 02 // MODEL COMPRESSION]</span>
+              <h3 class="project-title">Post-Training Quantization (AWQ & GPTQ) Benchmark Suite</h3>
+              <p class="project-desc">
+                Comprehensive evaluation of 4-bit and 8-bit weight quantization schemes across 7B and 8B parameter models. Measured WikiText-2 perplexity degradation against FP16 baselines and benchmarked memory footprint reduction, enabling deployment on consumer-grade hardware.
+              </p>
+              
+              <div class="project-audit-box">
+                <div class="audit-row"><span class="audit-label">VRAM Delta:</span> <span class="audit-val">16GB (FP16) → 5.8GB (INT4)</span></div>
+                <div class="audit-row"><span class="audit-label">Perplexity:</span> <span class="audit-val">&lt; 0.12 degradation on WikiText-2</span></div>
+                <div class="audit-row"><span class="audit-label">Speedup:</span> <span class="audit-val">1.85x token generation speedup</span></div>
+              </div>
+
+              <div class="tech-tags">
+                <span class="tag">AutoAWQ</span>
+                <span class="tag">GPTQ</span>
+                <span class="tag">Hugging Face</span>
+                <span class="tag">PyTorch</span>
+                <span class="tag">INT4/FP8</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <a href="https://github.com/yash6967/" target="_blank" rel="noopener noreferrer" class="card-link">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                <span>View Source</span>
+              </a>
+              <a href="#contact" class="card-link secondary">
+                <span>Benchmark Data ↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="project-card" data-category="serving">
+            <div class="project-topbar">
+              <span class="trace-id">TRACE-ID: triton-grpc-ensemble-pipe</span>
+              <span class="trace-metric">🚀 p99 &lt; 18ms SLA</span>
+            </div>
+            <div class="project-content">
+              <span class="project-cat-tag">[INF. 03 // ENTERPRISE SERVING]</span>
+              <h3 class="project-title">Multi-Model Serving Pipeline with Triton & ONNX Runtime</h3>
+              <p class="project-desc">
+                Engineered an enterprise inference microservice using NVIDIA Triton Inference Server. Configured dynamic batching queues, model ensembling, and FP16 tensor acceleration for embedding and reranking models with strict p99 latency constraints.
+              </p>
+              
+              <div class="project-audit-box">
+                <div class="audit-row"><span class="audit-label">Protocol:</span> <span class="audit-val">gRPC with zero-copy shared memory</span></div>
+                <div class="audit-row"><span class="audit-label">Batching:</span> <span class="audit-val">Dynamic batching (max_queue_delay: 5ms)</span></div>
+                <div class="audit-row"><span class="audit-label">Concurrency:</span> <span class="audit-val">Multiple model instances per GPU core</span></div>
+              </div>
+
+              <div class="tech-tags">
+                <span class="tag">Triton</span>
+                <span class="tag">ONNX Runtime</span>
+                <span class="tag">gRPC</span>
+                <span class="tag">Docker</span>
+                <span class="tag">C++ / Python</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <a href="https://github.com/yash6967/" target="_blank" rel="noopener noreferrer" class="card-link">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                <span>View Source</span>
+              </a>
+              <a href="#contact" class="card-link secondary">
+                <span>Deployment Trace ↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 4 -->
+          <article class="project-card" data-category="benchmarking">
+            <div class="project-topbar">
+              <span class="trace-id">TRACE-ID: nsight-kernel-roofline-trace</span>
+              <span class="trace-metric">📊 Roofline Saturation</span>
+            </div>
+            <div class="project-content">
+              <span class="project-cat-tag">[INF. 04 // HARDWARE PROFILING]</span>
+              <h3 class="project-title">GPU Kernel & Memory Profiling Suite (Nsight & PyTorch)</h3>
+              <p class="project-desc">
+                Profiled transformer attention layers to diagnose memory-bound bottlenecks versus compute-bound operations. Implemented FlashAttention-2 integrations and documented roofline analysis showing HBM2e bandwidth utilization on NVIDIA GPUs.
+              </p>
+              
+              <div class="project-audit-box">
+                <div class="audit-row"><span class="audit-label">Speedup:</span> <span class="audit-val">2.1x vs standard Eager PyTorch Attention</span></div>
+                <div class="audit-row"><span class="audit-label">Profiling:</span> <span class="audit-val">Nsight Systems timeline & CUDA API trace</span></div>
+                <div class="audit-row"><span class="audit-label">Bottleneck:</span> <span class="audit-val">SRAM tiling resolved global memory spill</span></div>
+              </div>
+
+              <div class="tech-tags">
+                <span class="tag">Nsight Systems</span>
+                <span class="tag">PyTorch Profiler</span>
+                <span class="tag">FlashAttention-2</span>
+                <span class="tag">CUDA</span>
+                <span class="tag">Linux</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <a href="https://github.com/yash6967/" target="_blank" rel="noopener noreferrer" class="card-link">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                <span>View Source</span>
+              </a>
+              <a href="#contact" class="card-link secondary">
+                <span>Profiling Report ↗</span>
+              </a>
+            </div>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Experiments Section -->
+    <section class="section section-alt" id="experiments">
+      <div class="container">
+        
+        <div class="section-header">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.45rem;">
+            <span class="section-tag">[ SECTION 02 // EMPIRICAL BENCHMARKS & EXPERIMENTS ]</span>
+            <span class="font-mono text-purple" style="font-size: 0.75rem;">TARGET: RTX 5060 (BLACKWELL SM_120) // WSL2</span>
+          </div>
+          <h2 class="section-title">Hardware & Inference Experiments</h2>
+          <p class="section-desc">
+            Controlled hardware profiling, empirical latency metrics, quantization analysis, and systems memory limit testing executed on physical silicon.
+          </p>
+        </div>
+
+        <div class="experiments-catalog">
+          
+          <!-- Experiment 1: Active & Live Featured Card -->
+          <article class="experiment-card-featured">
+            <div class="exp-featured-topbar">
+              <div class="exp-id-box">
+                <span class="pulse-dot"></span>
+                <span class="font-mono text-purple font-bold">EXP. 01 // CONSOLIDATED & VERIFIED</span>
+                <span class="exp-date font-mono">OCTOBER 2026</span>
+              </div>
+              <div class="exp-badge font-mono">
+                <span>FULL 12-PART DOSSIER</span>
+              </div>
+            </div>
+
+            <div class="exp-featured-body">
+              <div class="exp-header-meta">
+                <span class="project-cat-tag">[SYSTEMS INVESTIGATION // QUANTIZATION, KV CACHE & SPECULATIVE DECODING]</span>
+                <h3 class="exp-featured-title">
+                  LLM Inference Optimization: Frameworks, Advanced Quantization, 16k KV-Cache & Speculative Decoding
+                </h3>
+                <p class="exp-featured-summary">
+                  Consolidated engineering benchmarks on an NVIDIA RTX 5060 (8GB VRAM, Blackwell SM 120). Evaluated framework serving (vLLM at <strong>102.71 TPS</strong> vs HF at <strong>60.16 TPS</strong>), weight quantization down to 2.06 BPW (<strong>IQ3_M achieving ~735 MB</strong> with near-lossless fidelity vs <strong>IQ2_XXS collapse</strong>), KV-cache precision at 16k context (<strong>q8_0 halving memory safely</strong> vs q4_0 breakdown), speculative decoding (<strong>8.3x generation speedup to 189.4 TPS</strong>, 37x prompt ingestion), and diagnosed the 8GB architectural barrier with Llama 3.1 8B.
+                </p>
+              </div>
+
+              <!-- Hardware Telemetry Bar -->
+              <div class="exp-telemetry-strip font-mono">
+                <div class="telemetry-item">
+                  <span class="telemetry-k">GPU SILICON:</span>
+                  <span class="telemetry-v">NVIDIA RTX 5060 (8GB VRAM)</span>
+                </div>
+                <div class="telemetry-item">
+                  <span class="telemetry-k">ARCHITECTURE:</span>
+                  <span class="telemetry-v">Blackwell (Compute SM 120)</span>
+                </div>
+                <div class="telemetry-item">
+                  <span class="telemetry-k">EVALUATION:</span>
+                  <span class="telemetry-v">Qwen 2.5 1.5B/0.5B & Llama 3.1 8B</span>
+                </div>
+                <div class="telemetry-item">
+                  <span class="telemetry-k">FRAMEWORKS:</span>
+                  <span class="telemetry-v">llama.cpp, vLLM v1, PyTorch/HF</span>
+                </div>
+              </div>
+
+              <!-- Key Metrics Grid -->
+              <div class="exp-metrics-grid">
+                <div class="exp-metric-cell">
+                  <span class="exp-metric-label">COMBINED PIPELINE SPEEDUP</span>
+                  <div class="exp-metric-num">189.4 <span class="unit">tok/s</span></div>
+                  <div class="exp-metric-sub"><strong>8.3x generation speedup</strong> (vs 22.7 tok/s FP16) fusing Target IQ3_M + q8_0 KV + Qwen 0.5B draft</div>
+                </div>
+
+                <div class="exp-metric-cell">
+                  <span class="exp-metric-label">PROMPT INGESTION PREFILL</span>
+                  <div class="exp-metric-num">935.8 <span class="unit">tok/s</span></div>
+                  <div class="exp-metric-sub"><strong>~37x prompt ingestion throughput</strong> (vs 25.3 tok/s FP16) across 16k context windows</div>
+                </div>
+
+                <div class="exp-metric-cell">
+                  <span class="exp-metric-label">I-MATRIX VRAM COMPRESSION</span>
+                  <div class="exp-metric-num">735 <span class="unit">MB</span></div>
+                  <div class="exp-metric-sub"><strong>~75% model storage cut</strong> via IQ3_M protecting critical attention weights with zero loss in coherence</div>
+                </div>
+              </div>
+
+              <div class="tech-tags" style="margin-bottom: 1.5rem;">
+                <span class="tag">llama.cpp</span>
+                <span class="tag">vLLM v1</span>
+                <span class="tag">IQ3_M i-matrix</span>
+                <span class="tag">Speculative Decoding</span>
+                <span class="tag">16k KV-Cache (q8_0)</span>
+                <span class="tag">bitsandbytes NF4</span>
+                <span class="tag">RTX 5060 (SM_120)</span>
+              </div>
+
+              <div class="exp-card-actions">
+                <a href="experiment-1.html" class="btn-lemma btn-lemma-primary">
+                  <span>Open Full Experiment Dossier</span>
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+                <span class="exp-read-time font-mono text-muted">
+                  Includes 12 structured sections, recommendation matrix, 16k context analysis, and 11 resolved roadblocks
+                </span>
+              </div>
+            </div>
+          </article>
+              </div>
+            </div>
+          </article>
+
+          <!-- Pipeline & Upcoming Experiments Roadmap -->
+          <div class="exp-roadmap-header">
+            <span class="section-tag">[ PLANNED EXPERIMENTS // IN PIPELINE ]</span>
+            <span class="font-mono text-muted" style="font-size: 0.72rem;">TEST MATRIX 2026</span>
+          </div>
+
+          <div class="upcoming-experiments-grid">
+            
+            <!-- Experiment 2 -->
+            <div class="experiment-card-queued">
+              <div class="exp-queued-topbar font-mono">
+                <span class="queued-id">EXP. 02 // QUEUED</span>
+                <span class="status-badge-queued">IN DESIGN</span>
+              </div>
+              <h4 class="queued-title">Speculative Decoding Verification & Latency Pruning</h4>
+              <p class="queued-desc">
+                Evaluating draft-target speculative decoding pairs (e.g. Qwen 2.5 0.5B draft + 7B target) on consumer GPU architectures to minimize Inter-Token Latency (ITL) under batch_size=1 constraints.
+              </p>
+              <div class="tech-tags" style="margin-bottom: 0;">
+                <span class="tag">Speculative Decoding</span>
+                <span class="tag">Draft Models</span>
+                <span class="tag">ITL Latency</span>
+              </div>
+            </div>
+
+            <!-- Experiment 3 -->
+            <div class="experiment-card-queued">
+              <div class="exp-queued-topbar font-mono">
+                <span class="queued-id">EXP. 03 // QUEUED</span>
+                <span class="status-badge-queued">SCHEDULED</span>
+              </div>
+              <h4 class="queued-title">FP8 KV-Cache Compression & Extended Context Scaling</h4>
+              <p class="queued-desc">
+                Benchmarking FP8 E4M3 vs FP16 KV cache quantization in vLLM to scale effective context window lengths beyond 16k without triggering OOM faults on 8GB/16GB VRAM hardware.
+              </p>
+              <div class="tech-tags" style="margin-bottom: 0;">
+                <span class="tag">FP8 E4M3</span>
+                <span class="tag">KV Cache</span>
+                <span class="tag">Context Scaling</span>
+              </div>
+            </div>
+
+            <!-- Experiment 4 -->
+            <div class="experiment-card-queued">
+              <div class="exp-queued-topbar font-mono">
+                <span class="queued-id">EXP. 04 // PLANNED</span>
+                <span class="status-badge-queued">TARGETED</span>
+              </div>
+              <h4 class="queued-title">TensorRT-LLM vs vLLM Concurrency Stress Test</h4>
+              <p class="queued-desc">
+                Direct head-to-head load testing measuring p50, p95, and p99 Time-To-First-Token (TTFT) and token throughput under simulated concurrent burst requests using Triton gRPC.
+              </p>
+              <div class="tech-tags" style="margin-bottom: 0;">
+                <span class="tag">TensorRT-LLM</span>
+                <span class="tag">In-Flight Batching</span>
+                <span class="tag">p99 SLA</span>
+              </div>
+            </div>
+
+            <!-- Experiment 5 -->
+            <div class="experiment-card-queued">
+              <div class="exp-queued-topbar font-mono">
+                <span class="queued-id">EXP. 05 // PLANNED</span>
+                <span class="status-badge-queued">TARGETED</span>
+              </div>
+              <h4 class="queued-title">Custom Triton Kernel: Fused FlashAttention-2 + RMSNorm</h4>
+              <p class="queued-desc">
+                Writing and profiling a custom fused kernel in OpenAI Triton to eliminate redundant global HBM round-trips between RMS normalization and projection matrices.
+              </p>
+              <div class="tech-tags" style="margin-bottom: 0;">
+                <span class="tag">Triton GPU</span>
+                <span class="tag">Fused Kernels</span>
+                <span class="tag">Nsight Profiling</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Skills Section (Lemma Matrix Layout) -->
+    <section class="section" id="skills">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">[ SECTION 03 // TECHNICAL SPECIFICATION ]</span>
+          <h2 class="section-title">Inference Systems Matrix</h2>
+          <p class="section-desc">
+            Core competencies, engines, runtimes, and profiling tools across the inference lifecycle.
+          </p>
+        </div>
+
+        <div class="skills-matrix">
+          
+          <!-- Cell 1 -->
+          <div class="skill-matrix-cell">
+            <div class="skill-cell-header">
+              <h3 class="skill-cat-title">Serving Engines & Runtimes</h3>
+              <span class="skill-index-tag">[SPEC. 01]</span>
+            </div>
+            <div class="skill-items-list">
+              <div class="skill-item-row">
+                <span class="skill-item-name">vLLM</span>
+                <span class="skill-item-detail">Continuous Batching, PagedAttn</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">TensorRT-LLM</span>
+                <span class="skill-item-detail">In-Flight Batching, Tensor Parallelism</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">Triton Inference Server</span>
+                <span class="skill-item-detail">Dynamic batching, Model ensembles</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">ONNX Runtime</span>
+                <span class="skill-item-detail">Cross-hardware graph acceleration</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">llama.cpp</span>
+                <span class="skill-item-detail">GGUF format, CPU/Edge execution</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cell 2 -->
+          <div class="skill-matrix-cell">
+            <div class="skill-cell-header">
+              <h3 class="skill-cat-title">Quantization & Compression</h3>
+              <span class="skill-index-tag">[SPEC. 02]</span>
+            </div>
+            <div class="skill-items-list">
+              <div class="skill-item-row">
+                <span class="skill-item-name">AWQ / AutoAWQ</span>
+                <span class="skill-item-detail">Activation-aware 4-bit weight quantization</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">GPTQ</span>
+                <span class="skill-item-detail">Second-order error compensation</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">FP8 / INT8 / INT4</span>
+                <span class="skill-item-detail">Weight & activation mixed precision</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">Speculative Decoding</span>
+                <span class="skill-item-detail">Draft model acceleration for lower latency</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">SmoothQuant</span>
+                <span class="skill-item-detail">Activation outlier migration</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cell 3 -->
+          <div class="skill-matrix-cell">
+            <div class="skill-cell-header">
+              <h3 class="skill-cat-title">Systems & Languages</h3>
+              <span class="skill-index-tag">[SPEC. 03]</span>
+            </div>
+            <div class="skill-items-list">
+              <div class="skill-item-row">
+                <span class="skill-item-name">Python</span>
+                <span class="skill-item-detail">FastAPI, AsyncIO, PyTorch, NumPy</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">C++ & CUDA Basics</span>
+                <span class="skill-item-detail">Memory hierarchy, kernel launching</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">FlashAttention-2</span>
+                <span class="skill-item-detail">IO-aware SRAM attention tiling</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">PyTorch Core</span>
+                <span class="skill-item-detail">Transformers, Accelerate, PEFT</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">Linux / Bash</span>
+                <span class="skill-item-detail">Kernel tuning, GPU drivers, shell automation</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cell 4 -->
+          <div class="skill-matrix-cell">
+            <div class="skill-cell-header">
+              <h3 class="skill-cat-title">Profiling & Infrastructure</h3>
+              <span class="skill-index-tag">[SPEC. 04]</span>
+            </div>
+            <div class="skill-items-list">
+              <div class="skill-item-row">
+                <span class="skill-item-name">Nsight Systems</span>
+                <span class="skill-item-detail">Timeline traces, kernel execution profiling</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">PyTorch Profiler</span>
+                <span class="skill-item-detail">Operator breakdown, memory snapshots</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">Docker & nvidia-docker</span>
+                <span class="skill-item-detail">GPU containerization, CUDA runtime images</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">Perf Benchmarking</span>
+                <span class="skill-item-detail">triton-perf-analyzer, llm-perf</span>
+              </div>
+              <div class="skill-item-row">
+                <span class="skill-item-name">Git & GitHub Actions</span>
+                <span class="skill-item-detail">Automated testing & CI/CD workflows</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+      <div class="container">
+        
+        <div class="about-box">
+          <span class="section-tag">[ SECTION 04 // BACKGROUND & PHILOSOPHY ]</span>
+          <h2 class="section-title">About Yash Sharma</h2>
+          
+          <p class="about-p">
+            I am an aspiring <strong>Inference Engineer</strong> focused on the infrastructure and systems engineering challenges of modern artificial intelligence. While model parameter counts scale, real-world deployment requires balancing latency budgets, GPU memory bandwidth, and compute costs.
+          </p>
+
+          <p class="about-p">
+            My work centers around squeezing maximum efficiency from hardware: minimizing KV-cache memory pressure through continuous batching, quantizing weights to 4-bit/8-bit precision with minimal perplexity degradation, and benchmarking Time-To-First-Token (TTFT) and throughput SLAs under high concurrent loads.
+          </p>
+
+          <div class="about-features-grid">
+            <div class="about-feature-item">
+              <span class="feature-tag">LEM. 1.1 // EFFICIENCY</span>
+              <div class="feature-title">Latency-First Architecture</div>
+              <div class="feature-desc">Targeting sub-20ms TTFT and tight p99 percentiles for interactive AI applications.</div>
+            </div>
+            <div class="about-feature-item">
+              <span class="feature-tag">LEM. 1.2 // MEMORY</span>
+              <div class="feature-title">VRAM Footprint Reduction</div>
+              <div class="feature-desc">Applying post-training quantization (AWQ/GPTQ) to slash hardware requirements by up to 65%.</div>
+            </div>
+            <div class="about-feature-item">
+              <span class="feature-tag">LEM. 1.3 // PRODUCTION</span>
+              <div class="feature-title">Production Serving Mindset</div>
+              <div class="feature-desc">Building resilient microservices with Triton and vLLM ready for continuous production traffic.</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <a href="https://github.com/yash6967/" target="_blank" rel="noopener noreferrer" class="btn-lemma btn-lemma-primary">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+              <span>GitHub Profile</span>
+            </a>
+            <a href="https://www.linkedin.com/in/yash232/" target="_blank" rel="noopener noreferrer" class="btn-lemma">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+              <span>LinkedIn Network</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section section-alt" id="contact">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">[ SECTION 05 // COMMUNICATIONS ]</span>
+          <h2 class="section-title">Initiate Contact</h2>
+          <p class="section-desc">
+            Open to inference engineering opportunities, system architecture discussions, and collaboration.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          
+          <!-- Contact Links -->
+          <div class="contact-cards-col">
+            
+            <a href="https://github.com/yash6967/" target="_blank" rel="noopener noreferrer" class="contact-tile">
+              <div class="tile-left">
+                <div class="tile-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </div>
+                <div class="tile-info">
+                  <span class="tile-label">GITHUB REPOSITORY</span>
+                  <span class="tile-val font-mono">github.com/yash6967</span>
+                </div>
+              </div>
+              <span class="tile-arrow">↗</span>
+            </a>
+
+            <a href="https://www.linkedin.com/in/yash232/" target="_blank" rel="noopener noreferrer" class="contact-tile">
+              <div class="tile-left">
+                <div class="tile-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </div>
+                <div class="tile-info">
+                  <span class="tile-label">LINKEDIN PROFILE</span>
+                  <span class="tile-val font-mono">linkedin.com/in/yash232</span>
+                </div>
+              </div>
+              <span class="tile-arrow">↗</span>
+            </a>
+
+            <div class="contact-tile" id="email-copy-card" role="button" tabindex="0" title="Click to copy email address">
+              <div class="tile-left">
+                <div class="tile-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <div class="tile-info">
+                  <span class="tile-label">DIRECT EMAIL</span>
+                  <span class="tile-val font-mono" id="email-address">yash.inference@example.com</span>
+                </div>
+              </div>
+              <span class="tile-copy-badge" id="copy-btn-text">COPY</span>
+            </div>
+
+          </div>
+
+          <!-- Contact Form -->
+          <form class="contact-form-box" id="contact-form">
+            <h3 class="form-title">Send a Transmission</h3>
+            
+            <div class="form-group">
+              <label for="name" class="form-label">IDENTITY / NAME</label>
+              <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Dr. Alex Mercer" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="form-label">COMMUNICATION ADDRESS / EMAIL</label>
+              <input type="email" id="email" name="email" class="form-input" placeholder="e.g. alex@company.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="subject" class="form-label">SUBJECT</label>
+              <input type="text" id="subject" name="subject" class="form-input" placeholder="e.g. Inference Role Discussion" required>
+            </div>
+
+            <div class="form-group">
+              <label for="message" class="form-label">TRANSMISSION MESSAGE</label>
+              <textarea id="message" name="message" class="form-input form-textarea" rows="4" placeholder="Hi Yash, let's discuss low-latency model serving..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-lemma btn-lemma-primary form-btn-full">
+              <span>Send Message</span>
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+
+            <div class="form-status" id="form-status"></div>
+          </form>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div>
+        <span>[SYS.SPEC // LOW-LATENCY INFERENCE & SERVING ARCHITECTURE]</span>
+      </div>
+      <div>
+        <span>© <span id="year"></span> Yash Sharma. Hosted on Vercel.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script src="script.js"></script>
+</body>
+</html>

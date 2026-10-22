@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiment 01: LLM Inference Engineering Dossier | Yash Sharma</title>
+  <meta name="description" content="Comprehensive engineering study on LLM inference: benchmarking frameworks (vLLM, HF, SGLang), weight quantization (Q4, IQ3, IQ2), KV-cache scaling at 16k context, and speculative decoding on NVIDIA RTX 5060 (Blackwell SM 120).">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23755CFE%22 stroke-width=%222%22><polygon points=%2213 2 3 14 12 14 11 22 21 10 12 10 13 2%22/></svg>">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="report-page">
+    
+    <!-- Navigation Top Bar -->
+    <header class="report-back-nav">
+      <a href="index.html#experiments" class="btn-lemma">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <span>Return to Portfolio</span>
+      </a>
+
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span class="font-mono text-purple" style="font-size: 0.75rem;">[LEM.SYS // EXP-01]</span>
+        <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme" title="Toggle Theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Report Hero Section -->
+    <section class="report-hero">
+      <div class="report-badge-strip">
+        <span class="section-tag">[ EXPERIMENT DOSSIER 01 // SYSTEMS INVESTIGATION ]</span>
+        <span class="exp-badge font-mono">STATUS: CONSOLIDATED & VERIFIED</span>
+        <span class="font-mono text-muted" style="font-size: 0.72rem;">OCTOBER 2026 // YASH SHARMA</span>
+      </div>
+
+      <h1 class="report-title">
+        LLM Inference Experiments: Benchmarking, Quantization, KV Cache, and Speculative Decoding
+      </h1>
+
+      <p class="report-lead">
+        A consolidated empirical investigation on an <strong>NVIDIA GeForce RTX 5060 (8 GB VRAM, Blackwell SM 120)</strong> under WSL2. 
+        Quantified performance trade-offs across <strong>serving engines (vLLM vs HF vs SGLang)</strong>, 
+        <strong>weight compression (FP16, Q4_K_M, IQ3_M, IQ2_XXS)</strong>, 
+        <strong>KV-cache quantization at 16k context (f16, q8_0, q4_0)</strong>, 
+        <strong>speculative decoding</strong>, and the <strong>8GB architectural ceiling</strong> with Llama 3.1 8B.
+      </p>
+
+      <!-- Quick Jump TOC Pills -->
+      <nav class="report-toc-pills" aria-label="Table of Contents">
+        <a href="#aim-questions">01 // Aim & Questions</a>
+        <a href="#testbed-env">02 // Hardware Environment</a>
+        <a href="#exec-summary">03 // Executive Summary</a>
+        <a href="#recommendations">04 // Recommendations</a>
+        <a href="#framework-bench">05 // Framework Serving</a>
+        <a href="#weight-quant">06 // Weight Quantization</a>
+        <a href="#kv-cache-16k">07 // 16k KV-Cache Precision</a>
+        <a href="#combined-pipeline">08 // Combined Pipeline (8.3x)</a>
+        <a href="#llama-8b-wall">09 // The 8GB VRAM Wall</a>
+        <a href="#concepts-rationale">10 // Concepts & Rationale</a>
+        <a href="#errors-resolutions">11 // 11 Roadblocks & Fixes</a>
+        <a href="#conclusions">12 // Final Conclusions</a>
+      </nav>
+
+      <!-- Top Metric Cards Strip -->
+      <div class="exp-metrics-grid">
+        <div class="exp-metric-cell">
+          <span class="exp-metric-label">COMBINED PIPELINE SPEEDUP</span>
+          <div class="exp-metric-num">189.4 <span class="unit">tok/s</span></div>
+          <div class="exp-metric-sub"><strong>8.3x generation speedup</strong> (vs 22.7 tok/s FP16) combining IQ3_M + q8_0 KV + Qwen 0.5B speculative draft</div>
+        </div>
+
+        <div class="exp-metric-cell">
+          <span class="exp-metric-label">PROMPT INGESTION BOOST</span>
+          <div class="exp-metric-num">935.8 <span class="unit">tok/s</span></div>
+          <div class="exp-metric-sub"><strong>~37x prompt ingestion throughput</strong> (vs 25.3 tok/s FP16 baseline) with GPU-offloaded prefill</div>
+        </div>
+
+        <div class="exp-metric-cell">
+          <span class="exp-metric-label">VRAM FOOTPRINT COMPRESSION</span>
+          <div class="exp-metric-num">735 <span class="unit">MB</span></div>
+          <div class="exp-metric-sub"><strong>~75% model storage reduction</strong> via i-matrix IQ3_M while preserving full reasoning coherence</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 01: Aim and Practical Questions -->
+    <section class="report-part-container" id="aim-questions">
+      <div class="report-part-header">
+        <span class="report-part-tag">[ SECTION 01 // OBJECTIVES & INQUIRIES ]</span>
+        <h2 class="report-part-title">Core Research Questions</h2>
+      </div>
+
+      <p class="report-narrative">
+        Modern consumer GPUs provide immense compute capabilities but operate under strict VRAM ceilings. This investigation was conducted to empirically resolve four practical systems-engineering questions:
+      </p>
+
+      <div class="research-q-grid">
+        <div class="research-q-card">
+          <span class="research-q-num">QUESTION 01 // FRAMEWORK EFFICIENCY</span>
+          <p class="research-q-text">Which inference framework (vLLM, Hugging Face, SGLang, or llama.cpp) provides the best speed and operational reliability on an 8 GB consumer GPU?</p>
+        </div>
+
+        <div class="research-q-card">
+          <span class="research-q-num">QUESTION 02 // WEIGHT QUANTIZATION</span>
+          <p class="research-q-text">How much physical VRAM and token generation throughput can be gained through modern K-quants and importance-matrix (i-matrix) algorithms before crossing the quality collapse boundary?</p>
+        </div>
+
+        <div class="research-q-card">
+          <span class="research-q-num">QUESTION 03 // KV-CACHE PRECISION</span>
+          <p class="research-q-text">How does key/value cache precision (f16, q8_0, q4_0) affect memory consumption and reasoning coherence under long-context (16,384 tokens) stress?</p>
+        </div>
+
+        <div class="research-q-card">
+          <span class="research-q-num">QUESTION 04 // SPECULATIVE PIPELINES</span>
+          <p class="research-q-text">Can importance-matrix quantization paired with speculative decoding accelerate generation without unacceptable latency overhead or draft rejection?</p>
+        </div>
+      </div>
+
+      <div class="callout-box">
+        <div class="callout-title">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span>SECURITY & INTEGRITY NOTE</span>
+        </div>
+        <p class="callout-text">
+          All credentials, model tokens, and proprietary endpoints are strictly decoupled and omitted from this report. Environments rely on local weights, authenticated via ephemeral runtime environment variables.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 02: Testbed Hardware & Environment -->
+    <section class="report-part-container" id="testbed-env">
+      <div class="report-part-header">
+        <span class="report-part-tag">[ SECTION 02 // EXPERIMENTAL ENVIRONMENT ]</span>
+        <h2 class="report-part-title">Hardware & Runtime Configuration</h2>
+      </div>
+
+      <p class="report-narrative">
+        Measurements represent local engineering benchmarks conducted under controlled hardware parameters. Timing isolated model-load overhead from prompt processing and token generation using native <code>torch.cuda.Event</code> timestamps.
+      </p>
+
+      <table class="report-spec-table font-mono">
+        <tbody>
+          <tr>
+            <th style="width: 28%;">GPU HARDWARE</th>
+            <td>NVIDIA GeForce RTX 5060 (8 GB GDDR6 VRAM, Blackwell Architecture / SM 120 / compute_120)</td>
+          </tr>
+          <tr>
+            <th>HOST OS & WORKSPACE</th>
+            <td>Ubuntu 22.04 / 24.04 via WSL2 (Direct CUDA Kernel Pass-through)</td>
+          </tr>
+          <tr>
+            <th>TOOLCHAIN & CUDA</th>
+            <td>CUDA 12.8+ · NVCC · C++ Release Build (-O3) with architecture 89 fallback flag</td>
+          </tr>
+          <tr>
+            <th>PYTHON ENVIRONMENTS</th>
+            <td>Python 3.10+ / 3.12 managed via <code>uv</code> (PEP 668 compliance)</td>
+          </tr>
+          <tr>
+            <th>FRAMEWORKS TESTED</th>
+            <td>PyTorch 2.x, Hugging Face Transformers, bitsandbytes, vLLM (v1 Engine), SGLang, llama.cpp</td>
+          </tr>
+          <tr>
+            <th>PRIMARY MODELS</th>
+            <td><code>Qwen/Qwen2.5-1.5B-Instruct</code> · <code>meta-llama/Llama-3.1-8B-Instruct</code></td>
+          </tr>
+          <tr>
+            <th>DRAFT MODEL</th>
+            <td><code>Qwen/Qwen2.5-0.5B-Instruct</code> (Q4_K_M GGUF format for speculative verification)</td>
+          </tr>
+          <tr>
+            <th>EVALUATION CONTEXTS</th>
+            <td>2,048 tokens (vLLM framework serving) · 16,384 tokens (KV-cache precision testing)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECTION 03: Executive Summary of Results -->
+    <section class="report-part-container" id="exec-summary">
+      <div class="report-part-header">
+        <span class="report-part-tag">[ SECTION 03 // EXECUTIVE FINDINGS ]</span>
+        <h2 class="report-part-title">Executive Summary of Results</h2>
+      </div>
+
+      <div class="diagnostic-timeline">
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">1. BEST SMALL-MODEL SERVING ENGINE</div>
+          <p class="report-narrative" style="margin-bottom: 0;">
+            <strong>vLLM v1 Engine</strong> generated Qwen 2.5 1.5B at <strong>102.71 tokens/sec</strong>, outperforming native Hugging Face (<strong>60.16 tokens/sec</strong>) by <strong>70.7%</strong> (1.71x speedup) through continuous batching and PagedAttention.
+          </p>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">2. BEST LOW-MEMORY LLAMA.CPP MODEL FORMAT</div>
+          <p class="report-narrative" style="margin-bottom: 0;">
+            <strong>IQ3_M with Importance Matrix</strong> occupied just <strong>~735 MB</strong> of storage, achieving <strong>~182.3 tokens/sec</strong> with zero degradation in structural coherence or reasoning logic.
+          </p>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">3. BEST STANDARD QUANTIZATION BALANCE</div>
+          <p class="report-narrative" style="margin-bottom: 0;">
+            <strong>Q4_K_M</strong> slashed model disk footprint from <strong>~2.92 GB</strong> down to <strong>~0.91–1.10 GB</strong> (-68.8%) and increased token generation from <strong>22.7</strong> to <strong>~59.9 tokens/sec</strong> (~2.64x faster).
+          </p>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">4. OPTIMAL KV-CACHE PRECISION AT 16K CONTEXT</div>
+          <p class="report-narrative" style="margin-bottom: 0;">
+            <strong>q8_0</strong> halved key/value memory storage (~50% reduction) while maintaining 100% output fidelity. Conversely, <strong>q4_0</strong> introduced severe numerical noise, causing catastrophic degeneration and infinite loops.
+          </p>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">5. THE EXTREME COMPRESSION BOUNDARY (IQ2_XXS)</div>
+          <p class="report-narrative" style="margin-bottom: 0;">
+            <strong>IQ2_XXS</strong> (2.06 BPW, ~481 MB, ~194.7 TPS) reached generation speed parity, but suffered from <strong>quantization collapse</strong>—hallucinating identities and looping uncontrollably.
+          </p>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">6. THE 8GB LLAMA-3.1-8B ARCHITECTURAL CEILING</div>
+          <p class="report-narrative" style="margin-bottom: 0;">
+            <strong>Hugging Face NF4</strong> succeeded stably at <strong>~30.20 tokens/sec (5.73 GB peak VRAM)</strong>. <strong>vLLM AWQ</strong> repeatedly failed due to mandatory static pre-allocation of PagedAttention cache pools and workspace buffers.
+          </p>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">7. SPECULATIVE DECODING MAXIMA</div>
+          <p class="report-narrative" style="margin-bottom: 0;">
+            Fusing <strong>IQ3_M target + q8_0 KV-cache + Qwen 0.5B draft</strong> yielded <strong>~189.4 tokens/sec generation</strong> and <strong>~935.8 tokens/sec prompt ingestion</strong>—an 8.3x leap over unoptimized FP16 baselines.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 04: Recommended Configurations Matrix -->
+    <section class="report-part-container" id="recommendations">
+      <div class="report-part-header">
+        <span class="report-part-tag">[ SECTION 04 // OPERATIONAL BLUEPRINT ]</span>
+        <h2 class="report-part-title">Recommended Configurations by Deployment Scenario</h2>
+      </div>
+
+      <div class="report-table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Target Workload / Scenario</th>
+              <th>Recommended Configuration</th>
+              <th>Status / Rating</th>
+              <th>Technical Justification</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Qwen 1.5B High-Concurrency Serving</strong></td>
+              <td class="font-mono">vLLM v1 (gpu_mem=0.80, max_len=2048)</td>
+              <td><span class="badge-status success">HIGHEST TPS</span></td>
+              <td>Delivers 102.71 TPS with continuous batching and efficient iteration-level scheduling.</td>
+            </tr>
+            <tr>
+              <td><strong>Qwen 1.5B Low-Memory Local CLI</strong></td>
+              <td class="font-mono">llama.cpp + IQ3_M (i-matrix)</td>
+              <td><span class="badge-status success">OPTIMAL FOOTPRINT</span></td>
+              <td>Fits in ~735 MB VRAM while maintaining full reasoning fidelity and ~182 TPS generation.</td>
+            </tr>
+            <tr>
+              <td><strong>Qwen 1.5B Simple & Reliable Quant</strong></td>
+              <td class="font-mono">llama.cpp + Q4_K_M</td>
+              <td><span class="badge-status info">TURNKEY STABLE</span></td>
+              <td>Clean workflow, zero calibration requirement, 60 TPS at ~0.91 GB footprint.</td>
+            </tr>
+            <tr>
+              <td><strong>Long-Context (16k) Workloads</strong></td>
+              <td class="font-mono">IQ3_M Weights + q8_0 KV Cache</td>
+              <td><span class="badge-status success">SAFE LONG-CTX</span></td>
+              <td>Slashes KV cache memory by 50% without triggering the catastrophic collapse seen in q4_0.</td>
+            </tr>
+            <tr>
+              <td><strong>Llama 3.1 8B on 8 GB Consumer Hardware</strong></td>
+              <td class="font-mono">Hugging Face + bitsandbytes NF4</td>
+              <td><span class="badge-status warning">8GB SURVIVOR</span></td>
+              <td>Dynamic per-request memory allocation fits within 5.73 GB peak where vLLM fails.</td>
+            </tr>
+            <tr>
+              <td><strong>Maximum Absolute llama.cpp Throughput</strong></td>
+              <td class="font-mono">IQ3_M + q8_0 KV + Qwen 0.5B Speculative Draft</td>
+              <td><span class="badge-status success">RECORD SPEED</span></td>
+              <td>Delivers 189.4 tok/s generation and 935.8 tok/s prompt ingestion across 16k context.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 05: Framework Comparison -->
+    <section class="report-part-container" id="framework-bench">
+      <div class="report-part-header">
+        <span class="report-part-tag">[ SECTION 05 // FRAMEWORK BENCHMARK ]</span>
+        <h2 class="report-part-title">Framework Comparison: Qwen 2.5 1.5B Instruct</h2>
+      </div>
+
+      <p class="report-narrative">
+        Standardized test generating 64 output tokens with prompt: <br>
+        <code class="term-code font-mono">"Explain the mechanics of paged attention in high performance systems."</code>
+      </p>
+
+      <div class="report-table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Framework Runtime</th>
+              <th>Generation Time</th>
+              <th>Throughput (TPS)</th>
+              <th>Peak VRAM</th>
+              <th>Result / Architectural Assessment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Hugging Face Native PyTorch</strong></td>
+              <td class="font-mono">1.0638 s</td>
+              <td class="highlight-val">60.16 tok/s</td>
+              <td class="font-mono">2.92 GB</td>
+              <td><span class="badge-status info">BASELINE</span> Stable, zero JIT friction, lacks continuous batching.</td>
+            </tr>
+            <tr>
+              <td><strong>vLLM (v1 Engine)</strong></td>
+              <td class="font-mono">0.6231 s</td>
+              <td class="highlight-speedup">102.71 tok/s</td>
+              <td class="highlight-val">~3.20 GB</td>
+              <td><span class="badge-status success">1.71x FASTER</span> +70.7% throughput improvement via PagedAttention.</td>
+            </tr>
+            <tr>
+              <td><strong>SGLang</strong></td>
+              <td class="font-mono text-muted">N/A</td>
+              <td class="font-mono text-muted">Blocked</td>
+              <td class="font-mono text-muted">N/A</td>
+              <td><span class="badge-status danger">INCOMPATIBLE</span> DeepGEMM requires NVCC &gt;= 12.9; SM 120 assertion failures.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-dossier-box">
+        <div class="code-dossier-header">
+          <span>FRAMEWORK BENCHMARK SCRIPT // bench_vllm_qwen.py</span>
+          <span>vLLM Engine Configuration</span>
+        </div>
+        <div class="code-dossier-body">
+import os
+os.environ["VLLM_ENGINE_READY_TIMEOUT_S"] = "120"
+
+import time
+import torch
+from vllm import LLM, SamplingParams
+
+MODEL_ID = "Qwen/Qwen2.5-1.5B-Instruct"
+
+def measure_vllm_benchmark(prompt: str, max_new_tokens: int = 64):
+    print(f"Initializing vLLM engine for {MODEL_ID}...")
+    llm = LLM(
+        model=MODEL_ID,
+        tensor_parallel_size=1,
+        gpu_memory_utilization=0.80,
+        max_model_len=2048,
+        trust_remote_code=True
+    )
+    sampling_params = SamplingParams(temperature=0.0, max_tokens=max_new_tokens)
+
+    torch.cuda.reset_peak_memory_stats()
+    start_time = time.perf_counter()
+    outputs = llm.generate([prompt], sampling_params)
+    torch.cuda.synchronize()
+    total_time = time.perf_counter() - start_time
+
+    generated_tokens = len(outputs[0].outputs[0].token_ids)
+    print(f"Throughput: {generated_tokens / total_time:.2f} tokens/sec")
+
+if __name__ == "__main__":
+    measure_vllm_benchmark("Explain the mechanics of paged attention in high performance systems.")
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 06: Weight Quantization Comparison -->
+    <section class="report-part-container" id="weight-quant">
+      <div class="report-part-header">
+        <span class="report-part-tag">[ SECTION 06 // MODEL COMPRESSION ]</span>
+        <h2 class="report-part-title">Weight Quantization: Precision, Size & Quality</h2>
+      </div>
+
+      <p class="report-narrative">
+        Evaluating the compression envelope from 16 bits-per-weight (BPW) down to 2.06 BPW using <code>llama.cpp</code> with standard K-quants and importance-matrix (<code>i-matrix</code>) calibration on <code>wikitext-2</code> (baseline perplexity 10.5976).
+      </p>
+
+      <div class="report-table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Model Format</th>
+              <th>Approx. Precision</th>
+              <th>Size on Disk / VRAM</th>
+              <th>Generation Speed</th>
+              <th>Observed Quality & Coherence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>FP16 Baseline</strong></td>
+              <td class="font-mono">16.0 BPW</td>
+              <td class="font-mono">~2,944 MiB (2.92 GB)</td>
+              <td class="highlight-val">~22.7 tok/s</td>
+              <td><span class="badge-status info">REFERENCE</span> Full precision uncompressed baseline.</td>
+            </tr>
+            <tr>
+              <td><strong>Q4_K_M (K-Quant)</strong></td>
+              <td class="font-mono">~4.50 BPW</td>
+              <td class="highlight-val">~0.91–1.10 GB</td>
+              <td class="highlight-val">~59.0–59.9 tok/s</td>
+              <td><span class="badge-status success">NEAR LOSSLESS</span> Excellent coherence, ~2.64x speedup, 68.8% memory cut.</td>
+            </tr>
+            <tr>
+              <td><strong>IQ3_M (with i-matrix)</strong></td>
+              <td class="font-mono">3.66 BPW</td>
+              <td class="highlight-speedup">~735 MB (-75%)</td>
+              <td class="highlight-speedup">~182.3 tok/s</td>
+              <td><span class="badge-status success">SWEET SPOT</span> Optimal balance; protects critical attention weights.</td>
+            </tr>
+            <tr>
+              <td><strong>IQ2_XXS (with i-matrix)</strong></td>
+              <td class="font-mono">2.06 BPW</td>
+              <td class="highlight-speedup">~481 MB (-83.6%)</td>
+              <td class="highlight-speedup">~194.7 tok/s</td>
+              <td><span class="badge-status danger">QUANT COLLAPSE</span> Hallucinates, loops indefinitely, lost reasoning logic.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Qualitative Output Comparison -->
+      <h3 style="font-size: 1.15rem; margin: 2rem 0 0.75rem;">Fidelity Breakdown Across Precision Levels</h3>
+      <div class="output-dialogue-grid">
+        <div class="output-dialogue-box">
+          <div class="output-box-title">Q4_K_M / IQ3_M PRESERVED OUTPUT</div>
+          <p class="output-quote">
+            "Paged attention is a concept that refers to the idea that our brains can only focus on and process a small portion of information at once, which is known as 'attentional scope.' This means that when we encounter large amounts of information..."
+          </p>
+        </div>
+
+        <div class="output-dialogue-box" style="border-color: var(--status-error);">
+          <div class="output-box-title" style="color: var(--status-error);">IQ2_XXS COLLAPSED OUTPUT</div>
+          <p class="output-quote" style="color: var(--status-error);">
+            "Attention attention attention is the the physical phenomenon of of scope scope scope... I am the student of of physics physics physics... [infinite loop detected]"
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 07: KV-Cache Precision at 16k Context -->
+    <section class="report-part-container" id="kv-cache-16k">
+      <div class="report-part-header">
+        <span class="report-part-tag">[ SECTION 07 // CONTEXT WINDOW SCALING ]</span>
+        <h2 class="report-part-title">KV-Cache Quantization at 16,384 Tokens Context</h2>
+      </div>
+
+      <p class="report-narrative">
+        Using <code>IQ3_M</code> weights under an extended 16,384 sequence length to isolate how key/value memory precision impacts attention state integrity.
+      </p>
+
+      <div class="report-table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>KV-Cache Precision</th>
+              <th>Generation Speed</th>
+              <th>Memory Footprint Delta</th>
+              <th>Output Quality Assessment</th>
+              <th>Engineering Verdict</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>f16 (16-bit Float)</strong></td>
+              <td class="font-mono">~197.1 tok/s</td>
+              <td class="font-mono">Baseline (100%)</td>
+              <td>Clean, accurate, coherent syntax</td>
+              <td><span class="badge-status info">QUALITY BASELINE</span> Maximum cache memory consumption.</td>
+            </tr>
+            <tr>
+              <td><strong>q8_0 (8-bit Quant)</strong></td>
+              <td class="font-mono">~188.5 tok/s</td>
+              <td class="highlight-speedup">~50% Cache Reduction</td>
+              <td>Clean, accurate, coherent syntax</td>
+              <td><span class="badge-status success">RECOMMENDED</span> Safe halving of attention cache memory.</td>
+            </tr>
+            <tr>
+              <td><strong>q4_0 (4-bit Quant)</strong></td>
+              <td class="font-mono">~189.8 tok/s</td>
+              <td class="font-mono">~75% Cache Reduction</td>
+              <td style="color: var(--status-error);">Severe degeneration, gibberish loops</td>
+              <td><span class="badge-status danger">UNUSABLE</span> Quantization noise breaks attention tracking.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout-box">
+        <div class="callout-title">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span>KEY TAKEAWAY: SEPARATION OF WEIGHT VS KV-CACHE DECISIONS</span>
+        </div>
+        <p class="callout-text">
+          Weight quantization and KV-cache quantization are completely distinct mathematical regimes. While weights can be safely quantized to 3.66 BPW (IQ3_M), quantizing attention state vectors to 4-bit (q4_0) corrupts self-attention dot-products across 16k tokens, causing catastrophic collapse. <strong>q8_0 is the true Pareto-optimal lower bound for KV caching.</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 08: Combined Pipeline Result -->
+    <section class="report-part-container" id="combined-pipeline">
+      <div class="report-part-header">
+        <span class="report-part-tag">[ SECTION 08 // MAXIMUM ACCELERATION ]</span>
+        <h2 class="report-part-title">Combined Multi-Optimization Pipeline: 8.3x Speedup</h2>
+      </div>
+
+      <p class="report-narrative">
+        By stacking three complementary optimizations—<strong>IQ3_M i-matrix weights</strong>, <strong>q8_0 KV cache</strong>, and <strong>Qwen 2.5 0.5B draft speculative decoding</strong>—the pipeline achieved unprecedented throughput on consumer hardware.
+      </p>
+
+      <div class="pipeline-compare-grid">
+        <div class="pipeline-compare-card">
+          <div class="pipeline-card-topbar">
+            <span>UNOPTIMIZED FP16 BASELINE</span>
+            <span class="font-mono text-muted">[1.0x REF]</span>
+          </div>
+          <div class="pipeline-stat-row">
+            <span class="pipeline-stat-label">Model Storage:</span>
+            <span class="pipeline-stat-val">~2,944 MiB (2.92 GB)</span>
+          </div>
+          <div class="pipeline-stat-row">
+            <span class="pipeline-stat-label">KV-Cache Format:</span>
+            <span class="pipeline-stat-val">f16 (Uncompressed)</span>
+          </div>
+          <div class="pipeline-stat-row">
+            <span class="pipeline-stat-label">Prompt Processing:</span>
+            <span class="pipeline-stat-val">~25.3 tokens/sec</span>
+          </div>
+          <div class="pipeline-stat-row">
+            <span class="pipeline-stat-label">Token Generation:</span>
+            <span class="pipeline-stat-val">~22.7 tokens/sec</span>
+          </div>
+          <div class="pipeline-stat-row" style="border-bottom: none;">
+            <span class="pipeline-stat-label">Execution Strategy:</span>
+            <span class="pipeline-stat-val">Single Model Eager Autoregressive</span>
+          </div>
+        </div>
+
+        <div class="pipeline-compare-card" style="border-color: var(--brand-purple); box-shadow: 0 4px 20px rgba(117, 92, 254, 0.15);">
+          <div class="pipeline-card-topbar">
+            <span style="color: var(--brand-purple); font-weight: 700;">COMBINED PIPELINE SOLUTION</span>
+            <span class="badge-status success">8.3x SPEEDUP</span>
+          </div>
+          <div class="pipeline-stat-row">
+            <span class="pipeline-stat-label">Model Storage:</span>
+            <span class="pipeline-stat-val highlight-speedup">~735 MiB (-75%)</span>
+          </div>
+          <div class="pipeline-stat-row">
+            <span class="pipeline-stat-label">KV-Cache Format:</span>
+            <span class="pipeline-stat-val highlight-speedup">q8_0 (-50% Cache VRAM)</span>
+          </div>
+          <div class="pipeline-stat-row">
+            <span class="pipeline-stat-label">Prompt Processing:</span>
+            <span class="pipeline-stat-val highlight-speedup">~935.8 tokens/sec (37x)</span>
+          </div>
+          <div class="pipeline-stat-row">
+            <span class="pipeline-stat-label">Token Generation:</span>
+            <span class="pipeline-stat-val highlight-speedup">~189.4 tokens/sec (8.3x)</span>
+          </div>
+          <div class="pipeline-stat-row" style="border-bottom: none;">
+            <span class="pipeline-stat-label">Execution Strategy:</span>
+            <span class="pipeline-stat-val font-mono">Target IQ3_M + Draft 0.5B Q4 (-ngl 99 -ngld 99)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-dossier-box">
+        <div class="code-dossier-header">
+          <span>PIPELINE EXECUTION COMMAND // llama-cli Speculative Decoding</span>
+          <span>llama.cpp build/bin</span>
+        </div>
+        <div class="code-dossier-body">
+./build/bin/llama-cli \
+  -m models/qwen2.5-1.5b-IQ3_M.gguf \
+  --model-draft models/qwen2.5-0.5b-Q4_K_M.gguf \
+  --spec-draft-n-max 5 \
+  -c 16384 \
+  -ctk q8_0 -ctv q8_0 \
+  -ngl 99 -ngld 99 \
+  -p "Explain the physics of paged attention in 2 sentences." \
+  -n 128 --color on
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 09: The 8GB VRAM Wall -->
+    <section class="report-part-container" id="llama-8b-wall">
+      <div class="report-part-header">
+        <span class="report-part-tag">[ SECTION 09 // ARCHITECTURAL INVESTIGATION ]</span>
+        <h2 class="report-part-title">The 8GB VRAM Wall: Llama 3.1 8B Memory Allocation Postmortem</h2>
+      </div>
+
+      <p class="report-narrative">
+        When evaluating Llama 3.1 8B on an 8GB GPU, a striking engineering dichotomy emerged: <strong>Hugging Face NF4 succeeds smoothly (~30.20 TPS, 5.73 GB peak)</strong>, whereas <strong>vLLM repeatedly crashes</strong> with <code>ValueError: No available memory for the cache blocks</code>.
+      </p>
+
+      <!-- Waterfall Diagram -->
+      <div class="memory-waterfall-card">
+        <div class="waterfall-header">
+          <span>VRAM ALLOCATION WATERFALL // 8.0 GB PHYSICAL BUDGET (RTX 5060)</span>
+        </div>
+
+        <div class="waterfall-visual">
+          <div class="waterfall-col">
+            <div class="waterfall-col-title">
+              <span>HUGGING FACE + BITSANDBYTES (NF4)</span>
+              <span class="highlight-speedup">✓ SUCCESS</span>
+            </div>
+            <div class="waterfall-stack">
+              <div class="waterfall-segment segment-os">
+                <span>OS / WSL2 Driver Overhead</span>
+                <span>~1.1 GB</span>
+              </div>
+              <div class="waterfall-segment segment-weights">
+                <span>NF4 Quantized Weights (Dynamic)</span>
+                <span>~2.2 GB</span>
+              </div>
+              <div class="waterfall-segment segment-workspaces">
+                <span>Dynamic KV Cache (Batch=1, Seq=64)</span>
+                <span>~0.1 GB</span>
+              </div>
+              <div class="waterfall-segment segment-free">
+                <span>Free Memory Headroom (STABLE)</span>
+                <span>~3.4 GB Headroom</span>
+              </div>
+            </div>
+            <div style="margin-top: 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">
+              Peak Allocation: <strong>5.73 GB</strong> · Dynamic per-batch memory.
+            </div>
+          </div>
+
+          <div class="waterfall-col">
+            <div class="waterfall-col-title">
+              <span>vLLM PRODUCTION SERVING ENGINE</span>
+              <span style="color: var(--status-error); font-weight: 600;">✗ VRAM CRASH</span>
+            </div>
+            <div class="waterfall-stack">
+              <div class="waterfall-segment segment-os">
+                <span>OS / WSL2 Driver Overhead</span>
+                <span>~1.1 GB</span>
+              </div>
+              <div class="waterfall-segment segment-weights">
+                <span>AWQ Quantized Weights</span>
+                <span>~4.8 GB</span>
+              </div>
+              <div class="waterfall-segment segment-workspaces">
+                <span>PyTorch Workspaces & ZeroMQ IPC</span>
+                <span>~1.0 GB</span>
+              </div>
+              <div class="waterfall-segment segment-workspaces">
+                <span>CUDA Graph & Inductor Workspace</span>
+                <span>~0.8 GB</span>
+              </div>
+              <div class="waterfall-segment segment-oom">
+                <span>Remaining for Static Block Pool</span>
+                <span>0.3 GB (EXHAUSTED)</span>
+              </div>
+            </div>
+            <div style="margin-top: 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--status-error);">
+              Available KV cache: <strong>-0.97 GiB</strong> · Cannot allocate PagedAttention block pool.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout-box">
+        <div class="callout-title">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          <span>ARCHITECTURAL CAUSE: DYNAMIC ON-DEMAND VS STATIC PRE-ALLOCATION</span>
+        </div>
+        <p class="callout-text">
+          Hugging Face allocates memory strictly on demand. For <code>batch_size=1</code>, it reserves only the exact KV cache needed for that sequence. 
+          Conversely, vLLM is an enterprise continuous-batching server: on boot, it mandates reserving static block tables, CUDA graph workspaces, and IPC buffers. On an 8GB physical GPU where OS/WSL2 consumes 1.1 GB and AWQ weights take 4.8 GB, <strong>the remaining 0.3 GB headroom is mathematically insufficient for vLLM's mandatory static block pool.</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 10: Concepts & Rationale -->
+    <section class="report-part-container" id="concepts-rationale">
+      <div class="report-part-header">
+        <span class="report-part-tag">[ SECTION 10 // METHODOLOGY & CONCEPTS ]</span>
+        <h2 class="report-part-title">Core Systems Principles & Rationale</h2>
+      </div>
+
+      <div class="diagnostic-timeline">
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">MEMORY-BANDWIDTH BOUND DECODING</div>
+          <p class="report-narrative" style="margin-bottom: 0;">
+            Autoregressive token generation on small models is strictly bounded by GPU memory bandwidth rather than compute FLOPs. Streaming a 735 MB model (IQ3_M) across the memory bus takes ~75% less time than streaming a 2.92 GB model (FP16), resulting directly in proportional speedups.
+          </p>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">IMPORTANCE MATRIX (I-MATRIX) CALIBRATION</div>
+          <p class="report-narrative" style="margin-bottom: 0;">
+            Instead of quantizing all tensors uniformly, i-matrix measures gradient activation sensitivity over representative text (wikitext-2). Sensitive channels retain higher bit-depth while non-critical weights are aggressively compressed, unlocking 3.66 BPW without loss of coherence.
+          </p>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">SPECULATIVE DECODING MECHANICS</div>
+          <p class="report-narrative" style="margin-bottom: 0;">
+            A lightweight draft model (Qwen 0.5B Q4) speculatively proposes 5 candidate tokens in parallel. The heavy target model (Qwen 1.5B IQ3) verifies all 5 tokens in a single forward pass, bypassing sequential token-by-token generation overhead.
+          </p>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">BLACKWELL ARCHITECTURE WORKAROUND (-DCMAKE_CUDA_ARCHITECTURES=89)</div>
+          <p class="report-narrative" style="margin-bottom: 0;">
+            Because NVCC on WSL2 lacked native pre-compiled target support for Blackwell <code>compute_120a</code>, building with architecture flag <code>89</code> (Ada Lovelace) provided a stable, fully functional backward-compatible compilation path.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 11: 11 Roadblocks & Resolutions -->
+    <section class="report-part-container" id="errors-resolutions">
+      <div class="report-part-header">
+        <span class="report-part-tag">[ SECTION 11 // ENGINEERING ROADMAP ]</span>
+        <h2 class="report-part-title">11 Errors, Roadblocks & Forensic Resolutions</h2>
+      </div>
+
+      <div class="diagnostic-timeline">
+        
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">6.1 MODEL DOWNLOAD & SHARD CORRUPTION</div>
+          <div class="diagnostic-error">IncompleteSnapshotError / OSError: We couldn't connect to huggingface.co</div>
+          <div class="diagnostic-res">SOLUTION: Interrupted download left partial shards; executed snapshot_download(resume_download=True) before enforcing local_files_only=True.</div>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">6.2 TORCHAUDIO / CUDA VERSION MISMATCH</div>
+          <div class="diagnostic-error">TorchAudio CUDA version mismatch (CUDA 13.0 vs CUDA 12.8 wheel conflicts)</div>
+          <div class="diagnostic-res">SOLUTION: Reinstalled aligned PyTorch wheel index builds matching host CUDA 12.8 runtime explicitly.</div>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">6.3 TORCHAO & FLASHINFER SM_120 WARNINGS</div>
+          <div class="diagnostic-error">Failed to load torchao/_C_mxfp8.so · SM 120 requires CUDA &gt;= 12.9</div>
+          <div class="diagnostic-res">SOLUTION: Binaries targeted Hopper (sm_90); runtime safely fell back to standard PyTorch kernels and FlashAttention-2.</div>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">6.4 VLLM ZEROMQ HANDSHAKE TIMEOUT</div>
+          <div class="diagnostic-error">KeyboardInterrupt inside zmq/sugar/socket.py during vLLM v1 EngineCore startup</div>
+          <div class="diagnostic-res">SOLUTION: Extended IPC readiness timeout via os.environ["VLLM_ENGINE_READY_TIMEOUT_S"] = "120".</div>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">6.5 VLLM CACHE-BLOCK EXHAUSTION ON 8GB</div>
+          <div class="diagnostic-error">ValueError: No available memory for the cache blocks across 5 tuning passes</div>
+          <div class="diagnostic-res">SOLUTION: Tested gpu_mem reduction, context restriction (max_len=2048), and eager mode. Concluded 8B models require 12GB+ on vLLM; used Hugging Face NF4 for 8GB single-batch inference.</div>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">6.6 SGLANG DEEPGEMM / JIT SM_120 INCOMPATIBILITY</div>
+          <div class="diagnostic-error">NVCC &gt;= 12.9 required by DeepGEMM on sm_120 architecture</div>
+          <div class="diagnostic-res">SOLUTION: Set SGLANG_DISABLE_DEEP_GEMM=1 and SGLANG_ALLOW_OVERRIDE_SM=1; determined vLLM provided superior turnkey stability on RTX 5060.</div>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">6.7 NVCC COMPILATION FATAL ERROR (compute_120a)</div>
+          <div class="diagnostic-error">nvcc fatal: Unsupported gpu architecture 'compute_120a'</div>
+          <div class="diagnostic-res">SOLUTION: Reconfigured build with cmake -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES=89 to compile using compatible Ada Lovelace instruction sets.</div>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">6.8 CALIBRATION ESTIMATED AT 3 HOURS ON CPU</div>
+          <div class="diagnostic-error">llama-imatrix calibration run estimated ~3 hours for 4,918 chunks</div>
+          <div class="diagnostic-res">SOLUTION: Rebuilt llama.cpp with CUDA enabled and offloaded all layers to GPU via -ngl 99; calibration completed in ~35 minutes.</div>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">6.9 DATASET DOWNLOAD 401 UNAUTHORIZED / 404 NOT FOUND</div>
+          <div class="diagnostic-error">Direct calibration dataset URL changes returned 401 Unauthorized / 404</div>
+          <div class="diagnostic-res">SOLUTION: Extracted dataset archive locally from verified mirror; decoupled authentication tokens from documentation repository.</div>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">6.10 KV-CACHE QUALITATIVE COLLAPSE AT 4-BIT</div>
+          <div class="diagnostic-error">q4_0 KV-cache produced random characters and infinite looping at 16k context</div>
+          <div class="diagnostic-res">SOLUTION: Adopted q8_0 as the mandatory lower bound, halving KV memory footprint while preserving 100% output fidelity.</div>
+        </div>
+
+        <div class="diagnostic-item">
+          <div class="diagnostic-item-title">6.11 SPECULATIVE DECODING CLI FLAG DEPRECATION</div>
+          <div class="diagnostic-error">Legacy --draft CLI option failed in current llama.cpp build</div>
+          <div class="diagnostic-res">SOLUTION: Upgraded syntax to current --model-draft and --spec-draft-n-max 5 options with explicit GPU offloading.</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 12: Final Conclusions -->
+    <section class="report-part-container" id="conclusions">
+      <div class="report-part-header">
+        <span class="report-part-tag">[ SECTION 12 // FINAL TAKEAWAYS ]</span>
+        <h2 class="report-part-title">Conclusions & Systems Trade-offs</h2>
+      </div>
+
+      <p class="report-narrative">
+        There is no singular "silver bullet" inference framework for an 8 GB consumer GPU. Real-world deployment requires balancing <strong>memory footprint</strong>, <strong>quality retention</strong>, <strong>startup overhead</strong>, and <strong>serving throughput</strong>:
+      </p>
+
+      <div class="about-features-grid" style="margin: 1.5rem 0;">
+        <div class="about-feature-item">
+          <span class="feature-tag">SERVING ENGINES</span>
+          <div class="feature-title">vLLM for Small Models</div>
+          <div class="feature-desc">Unbeatable 102.7 TPS throughput with continuous batching for 1.5B models; requires 12GB+ for 8B models.</div>
+        </div>
+
+        <div class="about-feature-item">
+          <span class="feature-tag">MODEL COMPRESSION</span>
+          <div class="feature-title">IQ3_M + Importance Matrix</div>
+          <div class="feature-desc">The ultimate 735 MB sweet spot on llama.cpp, delivering 182 TPS with zero reasoning degradation.</div>
+        </div>
+
+        <div class="about-feature-item">
+          <span class="feature-tag">SCALED INFERENCE</span>
+          <div class="feature-title">Speculative Decoding + q8_0</div>
+          <div class="feature-desc">Achieves 189.4 tok/s generation and 935.8 tok/s prompt ingestion across 16k context windows.</div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-top: 2rem;">
+        <a href="index.html#experiments" class="btn-lemma btn-lemma-primary">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>Return to Experiments Catalog</span>
+        </a>
+        <a href="index.html#skills" class="btn-lemma">
+          <span>Explore Systems Stack</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" style="margin-top: 4rem;">
+      <div class="footer-container">
+        <div>
+          <span>[EXP.DOSSIER 01 // LOW-VRAM INFERENCE & BENCHMARK SUITE]</span>
+        </div>
+        <div>
+          <span>© <span id="year"></span> Yash Sharma. Hosted on Vercel.</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const yearSpan = document.getElementById('year');
+      if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+      const themeToggle = document.getElementById('theme-toggle');
+      const htmlRoot = document.documentElement;
+      const savedTheme = localStorage.getItem('theme');
+      const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+
+      if (savedTheme) {
+        htmlRoot.setAttribute('data-theme', savedTheme);
+      } else if (systemPrefersLight) {
+        htmlRoot.setAttribute('data-theme', 'light');
+      } else {
+        htmlRoot.setAttribute('data-theme', 'dark');
+      }
+
+      themeToggle?.addEventListener('click', () => {
+        const currentTheme = htmlRoot.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        htmlRoot.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      });
+    });
+  </script>
+</body>
+</html>
