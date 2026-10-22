@@ -24,13 +24,8 @@
     <div class="nav-container">
       
       <div class="nav-brand">
-        <a href="#hero" class="brand-cube" title="Yash Sharma">
-          <!-- Lemma-inspired isometric precision emblem -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-            <path d="M2 17l10 5 10-5"></path>
-            <path d="M2 12l10 5 10-5"></path>
-          </svg>
+        <a href="#hero" class="brand-avatar-link" title="Yash Sharma">
+          <img src="images/profile_photo.png" alt="Yash Sharma" class="nav-avatar">
         </a>
         <a href="#hero" class="brand-title">Yash Sharma</a>
         <span class="brand-spec font-mono">INF.SYS</span>
@@ -104,33 +99,51 @@
           <div class="hero-coords font-mono">[LEM.SYS // INF-ENG-2026]</div>
         </div>
 
-        <h1 class="hero-title">
-          Hi, I'm <span class="hero-gradient">Yash Sharma</span>.
-        </h1>
-        
-        <p class="hero-subhead">
-          Aspiring <strong>Inference Engineer</strong> specializing in 
-          <strong>high-throughput model serving</strong>, 
-          <strong>low-latency optimization</strong>, and <strong>quantization</strong>.
-        </p>
+        <div class="hero-intro-layout">
 
-        <p class="hero-narrative">
-          Bridging the gap between frontier models and production hardware. I optimize LLM serving workloads using continuous batching (vLLM), TensorRT-LLM, weight/activation quantization (AWQ/GPTQ/FP8), and GPU memory profiling to maximize tokens-per-second while slashing p99 latency.
-        </p>
+          <!-- Profile Photo -->
+          <div class="hero-avatar-wrapper">
+            <div class="hero-avatar-frame">
+              <img src="images/profile_photo.png" alt="Yash Sharma — Inference Engineer" class="hero-avatar-img">
+              <div class="hero-avatar-spec-badge font-mono">
+                <span class="pulse-dot"></span>
+                <span>AVAILABLE FOR ROLES</span>
+              </div>
+            </div>
+          </div>
 
-        <div class="hero-actions">
-          <a href="#projects" class="btn-lemma btn-lemma-primary">
-            <span>Explore Engineering Work</span>
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </a>
-          <a href="https://github.com/yash6967/" target="_blank" rel="noopener noreferrer" class="btn-lemma">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-            <span>github.com/yash6967</span>
-          </a>
-          <a href="https://www.linkedin.com/in/yash232/" target="_blank" rel="noopener noreferrer" class="btn-lemma">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-            <span>LinkedIn</span>
-          </a>
+          <!-- Intro Text -->
+          <div class="hero-intro-text">
+            <h1 class="hero-title">
+              Hi, I'm <span class="hero-gradient">Yash Sharma</span>.
+            </h1>
+            
+            <p class="hero-subhead">
+              Aspiring <strong>Inference Engineer</strong> specializing in 
+              <strong>high-throughput model serving</strong>, 
+              <strong>low-latency optimization</strong>, and <strong>quantization</strong>.
+            </p>
+
+            <p class="hero-narrative">
+              Bridging the gap between frontier models and production hardware. I optimize LLM serving workloads using continuous batching (vLLM), TensorRT-LLM, weight/activation quantization (AWQ/GPTQ/FP8), and GPU memory profiling to maximize tokens-per-second while slashing p99 latency.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#projects" class="btn-lemma btn-lemma-primary">
+                <span>Explore Engineering Work</span>
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+              <a href="https://github.com/yash6967/" target="_blank" rel="noopener noreferrer" class="btn-lemma">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                <span>github.com/yash6967</span>
+              </a>
+              <a href="https://www.linkedin.com/in/yash232/" target="_blank" rel="noopener noreferrer" class="btn-lemma">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                <span>LinkedIn</span>
+              </a>
+            </div>
+          </div>
+
         </div>
 
         <!-- Interactive Lemma-Style Terminal / Trace Inspector -->
@@ -700,14 +713,18 @@
         <div class="about-box">
           <span class="section-tag">[ SECTION 04 // BACKGROUND & PHILOSOPHY ]</span>
           <h2 class="section-title">About Yash Sharma</h2>
-          
-          <p class="about-p">
-            I am an aspiring <strong>Inference Engineer</strong> focused on the infrastructure and systems engineering challenges of modern artificial intelligence. While model parameter counts scale, real-world deployment requires balancing latency budgets, GPU memory bandwidth, and compute costs.
-          </p>
 
-          <p class="about-p">
-            My work centers around squeezing maximum efficiency from hardware: minimizing KV-cache memory pressure through continuous batching, quantizing weights to 4-bit/8-bit precision with minimal perplexity degradation, and benchmarking Time-To-First-Token (TTFT) and throughput SLAs under high concurrent loads.
-          </p>
+          <div class="about-identity-row">
+            <img src="images/profile_photo.png" alt="Yash Sharma" class="about-avatar">
+            <div class="about-identity-text">
+              <p class="about-p">
+                I am an aspiring <strong>Inference Engineer</strong> focused on the infrastructure and systems engineering challenges of modern artificial intelligence. While model parameter counts scale, real-world deployment requires balancing latency budgets, GPU memory bandwidth, and compute costs.
+              </p>
+              <p class="about-p" style="margin-bottom: 0;">
+                My work centers around squeezing maximum efficiency from hardware: minimizing KV-cache memory pressure through continuous batching, quantizing weights to 4-bit/8-bit precision with minimal perplexity degradation, and benchmarking Time-To-First-Token (TTFT) and throughput SLAs under high concurrent loads.
+              </p>
+            </div>
+          </div>
 
           <div class="about-features-grid">
             <div class="about-feature-item">
