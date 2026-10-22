@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navLinks?.classList.toggle('open');
   });
 
-  navLinks?.querySelectorAll('.nav-link').forEach(link => {
+  navLinks?.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       navLinks.classList.remove('open');
     });
